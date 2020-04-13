@@ -1,0 +1,17 @@
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator.csprojAssemblyReference.cache
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\MainWindow.g.cs
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\App.g.cs
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator_MarkupCompile.cache
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator_MarkupCompile.lref
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\bin\Debug\FlyingSimulator.exe.config
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\bin\Debug\FlyingSimulator.exe
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\bin\Debug\FlyingSimulator.pdb
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\MainWindow.baml
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator.g.resources
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator.Properties.Resources.resources
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator.csproj.GenerateResource.cache
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator.exe
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\FlyingSimulator.pdb
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\Joystick.baml
+C:\Users\inbar\source\repos\FlyingSimulator\FlyingSimulator\obj\Debug\Joystick.g.cs

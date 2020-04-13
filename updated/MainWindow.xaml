@@ -1,0 +1,74 @@
+﻿<Window x:Class="FlightSimulatorApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FlightSimulatorApp"
+        xmlns:views="clr-namespace:FlightSimulatorApp.Views"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1000"
+        MouseMove="onMouseMove" MouseLeftButtonDown="onMouseMove" MouseLeftButtonUp="onMouseMove">
+
+    <Grid RenderTransformOrigin="10,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="8*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.Row="3" Grid.Column = "3">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="SlateGray" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="1" Grid.Column = "3">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="SlateGray" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="0" Grid.ColumnSpan="5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Column="0" Grid.RowSpan="5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Column="2" Grid.RowSpan="5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Column="4" Grid.RowSpan="5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="2" Grid.Column="3">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="4" Grid.ColumnSpan="5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Viewbox Grid.Column="3" Grid.Row="3">
+            <views:Navigator x:Name="navigator" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></views:Navigator>
+        </Viewbox>
+        <Viewbox Grid.Column="3" Grid.Row="1">
+            <views:Panel x:Name="panel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></views:Panel>
+        </Viewbox>
+    </Grid>
+</Window>
