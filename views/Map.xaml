@@ -8,8 +8,19 @@
              mc:Ignorable="d" Width="604.839" Height="614.1">
 
     <Grid Margin="0,-168,-0.2,-0.4">
-        <m:Map CredentialsProvider="Agz4XLmZqh2XZGQROwviXQbI-wFGHvyDy4DVITnrPhGJ0tAuaer-LBnR3TVJ9Z9_" RenderTransformOrigin="0.427,0.505" ZoomLevel="1.12" Height="560" VerticalAlignment="Bottom" Margin="0,0,42,57.8">
-            <m:Pushpin Location="{Binding Location}" />
+        <m:Map CredentialsProvider="Agz4XLmZqh2XZGQROwviXQbI-wFGHvyDy4DVITnrPhGJ0tAuaer-LBnR3TVJ9Z9_" RenderTransformOrigin="0.427,0.505" ZoomLevel="1.25" Height="618" VerticalAlignment="Bottom" Margin="0,0,0,-0.2">
+            <Canvas m:MapLayer.Position="{Binding Location}">
+                <Image Source="airplane.png" Width="40" Height="40" RenderTransformOrigin="0.5,0.5" >
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="{Binding Rotate}"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Canvas>
         </m:Map>
     </Grid>
 </UserControl>

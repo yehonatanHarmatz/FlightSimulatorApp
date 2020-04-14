@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-
+using FlightSimulatorApp.Exceptions;
 namespace FlightSimulatorApp
 {
     class Client
@@ -12,27 +12,33 @@ namespace FlightSimulatorApp
         private TcpClient socket;
         private String reminder;
         private NetworkStream stream;
-        public void Connect(String ip, Int32 port)
+        public bool Connect(String ip, Int32 port)
         {
             try
             {
                 // Create a TcpClient.
-                socket = new TcpClient(ip, port);
+                this.socket = new TcpClient(ip, port);
+                this.socket.ReceiveTimeout = 10000;
+                this.socket.SendTimeout = 10000;
                 this.stream = socket.GetStream();
                 reminder = "";
-
+                return true;
                 /*open new thred for coonection with the server*/
             }
             catch (SocketException e)
             {
-                Console.WriteLine("SocketException: {0}", e);
+                //Console.WriteLine("SocketException: {0}", e);
+                return false;
             }
         }
         public void Disconnecet()
         {
-            socket.Close();
+            if (socket != null)
+            {
+                socket.Close();
+            }
         }
-        
+
         public void Write(String message)
         {
             try
@@ -44,9 +50,24 @@ namespace FlightSimulatorApp
                 // Send the message to the connected TcpServer. 
                 stream.Write(data, 0, data.Length);
                 //stream.Close();
-            } catch (Exception e)
+            }
+            catch (System.Net.Sockets.SocketException e)
+            {
+                throw TimeOutException.Instance;
+            }
+            catch (System.IO.IOException e)
             {
                 Console.WriteLine("Exception: {0}", e);
+                if (!this.socket.Connected)
+                {
+                    throw ServerDisconnectedException.Instance;
+                }
+                throw TimeOutException.Instance;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                throw TimeOutException.Instance;
             }
         }
         public String Read()
@@ -66,15 +87,29 @@ namespace FlightSimulatorApp
                     reminder += responseData;
                 }
                 answer = reminder.Split('\n')[0];
-                reminder = reminder.Remove(0, answer.Length+1);
+                reminder = reminder.Remove(0, answer.Length + 1);
                 //stream.Close();
                 return answer;
-            } catch (Exception e)
+            }
+            catch (System.Net.Sockets.SocketException e)
+            {
+                throw TimeOutException.Instance;
+            }
+            catch (System.IO.IOException e)
             {
                 Console.WriteLine("Exception: {0}", e);
-                return "ERR";
+                if (!this.socket.Connected)
+                {
+                    throw ServerDisconnectedException.Instance;
+                }
+                throw TimeOutException.Instance;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: {0}", e);
+                throw TimeOutException.Instance;
             }
         }
-       
+
     }
 }

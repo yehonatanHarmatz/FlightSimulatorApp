@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,25 +16,13 @@ using System.Windows.Shapes;
 namespace FlightSimulatorApp.views
 {
     /// <summary>
-    /// Interaction logic for Map.xaml
+    /// Interaction logic for ErrorDisplay.xaml
     /// </summary>
-    public partial class Map : UserControl
+    public partial class ErrorDisplay : UserControl
     {
-        Map_VM map;
-        public Map()
+        public ErrorDisplay()
         {
             InitializeComponent();
-        }
-        public Map(Map_VM map)
-        {
-            InitializeComponent();
-            this.map = map;
-            DataContext = map;
-            //Model m = new Model();
-            //Map_VM map = new Map_VM(m);
-            //DataContext = map;
-            //Thread t1 = new Thread(m.Start);
-            //t1.Start();
         }
     }
 }

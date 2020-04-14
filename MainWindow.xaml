@@ -4,13 +4,89 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FlightSimulatorApp"
+        xmlns:views="clr-namespace:FlightSimulatorApp.views"
         mc:Ignorable="d"
-        Title="ConnectionWindow" Height="537.097" Width="800">
-    <Grid>
-        <TextBlock Text="IP:" FontSize="30" Margin="295,142,457.6,317.2"></TextBlock>
-        <TextBlock Text="Port:" FontSize="30" Margin="272,191,457.6,268.2"></TextBlock>
-        <TextBox x:Name="PortTextBox" Text="5402" FontSize="30" Margin="370,141,288.6,317.2" TextChanged="ChangePort"> </TextBox>
-        <TextBox x:Name="IPTextBox" Text="127.0.0.1" FontSize="30" Margin="370,190,232.6,268.2" TextChanged="ChangeIP"> </TextBox>
-        <Button Content="Connect" FontSize="30" Margin="311,277,343.6,173.2" Click="Connect"> </Button>
+        Title="MainWindow" Height="600" Width="1000"
+        MouseMove="onMouseMove" MouseLeftButtonDown="onMouseMove" MouseLeftButtonUp="onMouseMove">
+
+    <Grid x:Name="Grid" RenderTransformOrigin="10,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.35*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.5*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="0.25*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="9*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="0.3*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.Row="3" Grid.Column = "3" Grid.RowSpan="3">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="SlateGray" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="1" Grid.Column = "3">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="SlateGray" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="0" Grid.ColumnSpan="5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="2" Grid.ColumnSpan="2">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="4" Grid.ColumnSpan="2">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Column="0" Grid.RowSpan="6">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Column="2" Grid.RowSpan="6">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Column="4" Grid.RowSpan="6">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="2" Grid.Column="3">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle Grid.Row="6" Grid.ColumnSpan="5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="LightBlue" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Viewbox Grid.Column="3" Grid.Row="3" Grid.RowSpan="3" >
+            <views:Navigator x:Name="navigator" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></views:Navigator>
+        </Viewbox>
+        <Viewbox Grid.Column="3" Grid.Row="1">
+            <views:Panel x:Name="panel" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></views:Panel>
+        </Viewbox>
+        <Viewbox Grid.Column="1" Grid.Row="3">
+            <views:Map x:Name="map" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="614" Width="820"></views:Map>
+        </Viewbox>
+        <Viewbox Grid.Row="5" Grid.Column="1">
+            <views:ErrorDisplay x:Name="errors" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="100"></views:ErrorDisplay>
+        </Viewbox>
     </Grid>
 </Window>

@@ -6,22 +6,36 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.ComponentModel;
 using System.Configuration;
+using FlightSimulatorApp.Exceptions;
 
 namespace FlightSimulatorApp
 {
-    class Model : INotifyPropertyChanged
+    public class Model : INotifyPropertyChanged
     {
         private Mutex mtx = new Mutex();
 
         private Client c;
-        private String ip;
-        private Int32 port;
         private Queue<String> setMessages;
         private bool stop = false;
 
         private double longitude = 0;
         private double latitude = 0;
-        
+        private string heading;
+        private string verticalSpeed;
+        private string groundSpeed;
+        private string speed;
+        private string gpsAltitude;
+        private string roll;
+        private string pitch;
+        private string altimeterAltitude;
+
+        private double rudder = 0;
+        private double elevator = 0;
+        private double throttle = 0;
+        private double aileron = 0;
+        private string errorMessage;
+        private bool connection;
+
         public delegate void PropertyChanged(object sender, PropertyChangedEventArgs e);
         public event PropertyChangedEventHandler propertyChanged;
 
@@ -30,6 +44,39 @@ namespace FlightSimulatorApp
             this.c = new Client();
             this.setMessages = new Queue<String>();
         }
+        public double RUDDER
+        {
+            get { return this.rudder; }
+            set
+            {
+                this.rudder = value;
+            }
+        }
+        public double ELEVATOR
+        {
+            get { return this.elevator; }
+            set
+            {
+                this.elevator = value;
+            }
+        }
+        public double AILERON
+        {
+            get { return this.aileron; }
+            set
+            {
+                this.aileron = value;
+            }
+        }
+        public double THROTTLE
+        {
+            get { return this.throttle; }
+            set
+            {
+                this.throttle = value;
+            }
+        }
+
         public double Longitude
         {
             get
@@ -41,20 +88,14 @@ namespace FlightSimulatorApp
                 if (Math.Abs(value) <= 84.99 && Longitude != value)
                 {
                     longitude = value;
-                    NotifyPropertyChanged("Longitude");
                 }
-                else if (Math.Abs(value) > 84.99)
+                else if (Longitude != value)
                 {
-                    if (Longitude > 0)
-                    {
-                        Longitude = 84.99;
-                    }
-                    else
-                    {
-                        Longitude = -84.99;
-                    }
-                    /*ERR*/
+                    ErrorMessage = "the location is outside of map ranges";
                 }
+                NotifyPropertyChanged("Longitude");
+
+         
             }
         }
         public double Latitude
@@ -65,25 +106,160 @@ namespace FlightSimulatorApp
             }
             set
             {
-                
+
                 if (Math.Abs(value) <= 180 && latitude != value)
                 {
                     latitude = value;
-                    NotifyPropertyChanged("Latitude");
                 }
-                else if (Math.Abs(value) > 180)
+                else if (latitude != value)
                 {
-                    if (Latitude > 0)
-                    {
-                        Latitude = 180;
-                    }
-                    else
-                    {
-                        Latitude = -180;
-                    }
-                    /*ERR*/
+                    ErrorMessage = "the location is outside of map ranges";
                 }
+                NotifyPropertyChanged("Latitude");
+
+                
             }
+        }
+
+        public string Heading
+        {
+            get => this.heading;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                heading = value;
+                NotifyPropertyChanged("Heading");
+            }
+        }
+
+        public string VerticalSpeed
+        {
+            get => this.verticalSpeed;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                verticalSpeed = value;
+                NotifyPropertyChanged("VerticalSpeed");
+            }
+        }
+
+        public string GroundSpeed
+        {
+            get => this.groundSpeed;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                groundSpeed = value;
+                NotifyPropertyChanged("GroundSpeed");
+            }
+        }
+
+        public string Speed
+        {
+            get => this.speed;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                speed = value;
+                NotifyPropertyChanged("Speed");
+            }
+        }
+
+        public string GpsAltitude
+        {
+            get => this.gpsAltitude;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                gpsAltitude = value;
+                NotifyPropertyChanged("GpsAltitude");
+            }
+        }
+        public string Roll
+        {
+            get => this.roll;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                roll = value;
+                NotifyPropertyChanged("Roll");
+            }
+        }
+
+        public string Pitch
+        {
+            get => this.pitch;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                pitch = value;
+                NotifyPropertyChanged("Pitch");
+            }
+        }
+
+        public string AltimeterAltitude
+        {
+            get => this.altimeterAltitude;
+            set
+            {
+                double d;
+                if (Double.TryParse(value, out d))
+                {
+                    value = Math.Round(d, 3).ToString();
+                }
+                altimeterAltitude = value;
+                NotifyPropertyChanged("AltimeterAltitude");
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get => this.errorMessage;
+            set
+            {
+                errorMessage = value;
+                NotifyPropertyChanged("ErrorMessage");
+            }
+        }
+
+        public bool Connection {
+            get => this.connection;
+            set
+            {
+                if (value != Connection)
+                {
+                    connection = value;
+                    NotifyPropertyChanged("Connection");
+                }
+            } 
         }
 
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
@@ -121,32 +297,128 @@ namespace FlightSimulatorApp
             };
             while (!stop)
             {
-                string s = String.Empty;
-                mtx.WaitOne();
-                c.Write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
-                s = c.Read();
-                if (s == "ERR")
-                {
-                    /****complete****/
+                try {
+                    string s = String.Empty;
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    Heading = s;
+                    mtx.ReleaseMutex();
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/gps/indicated-vertical-speed\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    VerticalSpeed = s;
+                    mtx.ReleaseMutex();
+                    /**3**/
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/gps/indicated-ground-speed-kt\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    GroundSpeed = s;
+                    mtx.ReleaseMutex();
+                    /**4**/
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    Speed = s;
+                    mtx.ReleaseMutex();
+                    /**5**/
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/gps/indicated-altitude-ft\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    GpsAltitude = s;
+                    mtx.ReleaseMutex();
+                    /**6**/
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    Roll = s;
+                    mtx.ReleaseMutex();
+                    /**7**/
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    Pitch = s;
+                    mtx.ReleaseMutex();
+                    /**8**/
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /instrumentation/altimeter/indicated-altitude-ft\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    AltimeterAltitude = s;
+                    mtx.ReleaseMutex();
+                    Thread.Sleep(250);
                 }
-                else
+                finally
                 {
-                    //Heading = Double.Parse(s.Split('=')[1]);
+                    try
+                    {
+                        mtx.ReleaseMutex();
+                    }
+                    catch (Exception e) { }
                 }
-                mtx.ReleaseMutex();
-                mtx.WaitOne();
-                c.Write("get /instrumentation/gps/indicated-vertical-speed\n");
-                s = c.Read();
-                if (s == "ERR")
-                {
-                    /****complete****/
-                }
-                else
-                {
-                    //VerticalSpeed = Double.Parse(s.Split('=')[1]);
-                }
-                mtx.ReleaseMutex();
-                Thread.Sleep(250);
             }
         }
         public void GetMapInformation()
@@ -159,34 +431,53 @@ namespace FlightSimulatorApp
 
             while (!stop)
             {
-                string s = String.Empty;
-                mtx.WaitOne();
-                c.Write("get /position/latitude-deg\n");
-                s = c.Read();
-                if (s == "ERR")
+                try
                 {
-                    /****complete****/
+                    string s = String.Empty;
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /position/latitude-deg\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    else
+                    {
+                        //Latitude = Double.Parse(s.Split('=')[1]);
+                        Latitude = Double.Parse(s);
+                    }
+                    mtx.ReleaseMutex();
+                    mtx.WaitOne();
+                    if (stop)
+                    {
+                        break;
+                    }
+                    c.Write("get /position/longitude-deg\n");
+                    s = c.Read();
+                    if (s == "ERR")
+                    {
+                        ErrorMessage = "recived invalid value";
+                    }
+                    else
+                    {
+                        //Longitude = Double.Parse(s.Split('=')[1]);
+                        Longitude = Double.Parse(s);
+                    }
+                    mtx.ReleaseMutex();
+                    //Thread.Sleep(250);
                 }
-                else
+                finally
                 {
-                    //Latitude = Double.Parse(s.Split('=')[1]);
-                    Latitude = Double.Parse(s);
+                    try
+                    {
+                        mtx.ReleaseMutex();
+                    }
+                    catch (Exception e) { }
                 }
-                mtx.ReleaseMutex();
-                mtx.WaitOne();
-                c.Write("get /position/longitude-deg\n");
-                s = c.Read();
-                if (s == "ERR")
-                {
-                    /****complete****/
-                }
-                else
-                {
-                    //Longitude = Double.Parse(s.Split('=')[1]);
-                    Longitude = Double.Parse(s);
-                }
-                mtx.ReleaseMutex();
-
             }
         }
         public void SendSetMessages()
@@ -195,64 +486,140 @@ namespace FlightSimulatorApp
             {
                 if (setMessages.Count > 0)
                 {
-                    string s = setMessages.Dequeue();
-                    mtx.WaitOne();
-                    c.Write(s+'\n');
-                    s = c.Read();
-                    if (s == "ERR")
+                    try
                     {
-                        /****complete****/
+                        mtx.WaitOne();
+                        if (stop)
+                        {
+                            break;
+                        }
+                        string s = setMessages.Dequeue();
+                        c.Write(s + '\n');
+                        s = c.Read();
+                        if (s == "ERR")
+                        {
+                            ErrorMessage = "recived invalid value";
+                        }
+                        mtx.ReleaseMutex();
                     }
-                    mtx.ReleaseMutex();
+                    finally
+                    {
+                        try
+                        {
+                            mtx.ReleaseMutex();
+                        }
+                        catch (Exception e) { }
+                    }
                 }
             }
         }
         public void AddSetMessage(String message)
         {
-            setMessages.Enqueue(message);
+            Task task = new Task(() =>
+            {
+                try
+                {
+                    mtx.WaitOne();
+                    setMessages.Enqueue(message);
+                    mtx.ReleaseMutex();
+                }
+                finally
+                {
+                    try
+                    {
+                        mtx.ReleaseMutex();
+                    }
+                    catch (Exception e) { }
+                }
+            });
+            task.Start();
+            
         }
         public void Start()
         {
+            mtx = new Mutex();
             var appSettings = ConfigurationManager.AppSettings;
             string ip = appSettings["IP"];
             Int32 port = Int32.Parse(appSettings["Port"]);
-            this.c.Connect(ip, port);
-            Thread t1 = new Thread(this.SendSetMessages);
-            Thread t2 = new Thread(this.GetMapInformation);
-            //t2 = new Thread(this.Test);
-            Thread t3 = new Thread(this.GetDashboardInformation);
+            this.stop = false;
+            if (!this.c.Connect(ip, port))
+            {
+                ErrorMessage = CantConnectException.Instance.Message;
+                Connection = false;
+                throw CantConnectException.Instance;
+            }
+            Connection = true;
+            //Thread t1 = new Thread(this.SendSetMessages);
+            //Thread t2 = new Thread(this.GetMapInformation);
+            //Thread t3 = new Thread(this.GetDashboardInformation);
+            Task t1 = new Task(this.SendSetMessages);
+            t1.ContinueWith(HandleExceptions1, TaskContinuationOptions.OnlyOnFaulted);
+            Task t2 = new Task(this.GetMapInformation);
+            t2.ContinueWith(HandleExceptions2, TaskContinuationOptions.OnlyOnFaulted);
+            Task t3 = new Task(this.GetDashboardInformation);
+            t3.ContinueWith(HandleExceptions3, TaskContinuationOptions.OnlyOnFaulted);
             t1.Start();
             t2.Start();
             t3.Start();
-            //Test();
         }
-
-        public void Test()
+        public void Stop()
         {
-            double i = 0.1;
-            Random r = new Random();
-            bool a = false;
-            
-            while (true)
+            Connection = false;
+            this.stop = true;
+            this.c.Disconnecet();
+        }
+        private void HandleExceptions1(Task task)
+        {
+            foreach (var e in task.Exception.InnerExceptions)
             {
-                if (r.Next(3) == 0)
+                ErrorMessage = e.Message;
+                // Handle the exception when server disconnected.
+                if (e is ServerDisconnectedException)
                 {
-                    if (a)
-                        Longitude += i;
-                    else
-                        Longitude -= i;
-                    if (Math.Abs(Longitude) > 85)
-                    {
-                        Latitude += 180;
-                        a = !a;
-                    }
+                    Connection = false;
                 }
                 else
                 {
-                    Latitude += i;
-                    
+                    Task t1 = new Task(this.SendSetMessages);
+                    t1.ContinueWith(HandleExceptions1, TaskContinuationOptions.OnlyOnFaulted);
+                    t1.Start();
                 }
-                Thread.Sleep(1);
+            }
+        }
+        private void HandleExceptions2(Task task)
+        {
+            foreach (var e in task.Exception.InnerExceptions)
+            {
+                ErrorMessage = e.Message;
+                // Handle the exception when server disconnected.
+                if (e is ServerDisconnectedException)
+                {
+                    Connection = false;
+                }
+                else
+                {
+                    Task t2 = new Task(this.GetMapInformation);
+                    t2.ContinueWith(HandleExceptions2, TaskContinuationOptions.OnlyOnFaulted);
+                    t2.Start();
+                }
+            }
+        }
+        private void HandleExceptions3(Task task)
+        {
+            foreach (var e in task.Exception.InnerExceptions)
+            {
+                ErrorMessage = e.Message;
+                // Handle the exception when server disconnected.
+                if (e is ServerDisconnectedException)
+                {
+                    Connection = false;
+                }
+                else
+                {
+                    Task t3 = new Task(this.GetDashboardInformation);
+                    t3.ContinueWith(HandleExceptions3, TaskContinuationOptions.OnlyOnFaulted);
+                    t3.Start();
+                }
             }
         }
     }
