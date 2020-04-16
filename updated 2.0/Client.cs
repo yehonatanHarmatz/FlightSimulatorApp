@@ -12,9 +12,11 @@ namespace FlightSimulatorApp
         private TcpClient socket;
         private String reminder;
         private NetworkStream stream;
+        private int problems;
+
         /******
-         * connect to the server
-         *******/
+* connect to the server
+*******/
         public bool Connect(String ip, Int32 port)
         {
             try
@@ -25,6 +27,7 @@ namespace FlightSimulatorApp
                 this.socket.SendTimeout = 10000;
                 this.stream = socket.GetStream();
                 reminder = "";
+                problems = 0;
                 return true;
                 /*open new thred for coonection with the server*/
             }
@@ -61,20 +64,22 @@ namespace FlightSimulatorApp
             }
             catch (System.Net.Sockets.SocketException e)
             {
+                problems++;
                 throw TimeOutException.Instance;
             }
             catch (System.IO.IOException e)
             {
-                Console.WriteLine("Exception: {0}", e);
+                //Console.WriteLine("Exception: {0}", e);
                 if (!this.socket.Connected)
                 {
                     throw ServerDisconnectedException.Instance;
                 }
+                problems++;
                 throw TimeOutException.Instance;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: {0}", e);
+                //Console.WriteLine("Exception: {0}", e);
                 throw TimeOutException.Instance;
             }
         }
@@ -85,39 +90,47 @@ namespace FlightSimulatorApp
         {
             try
             {
+                String answer = "";
                 //NetworkStream stream = socket.GetStream();
-                String answer = String.Empty;
-                while (reminder.IndexOf('\n') == -1)
+                while (this.problems >= 0)
                 {
-                    Byte[] data = new Byte[256];
-                    // String to store the response ASCII representation.
-                    String responseData = String.Empty;
-                    // Read the first batch of the TcpServer response bytes.
-                    Int32 bytes = stream.Read(data, 0, data.Length);
-                    responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                    reminder += responseData;
+                    answer = String.Empty;
+                    while (reminder.IndexOf('\n') == -1)
+                    {
+                        Byte[] data = new Byte[256];
+                        // String to store the response ASCII representation.
+                        String responseData = String.Empty;
+                        // Read the first batch of the TcpServer response bytes.
+                        Int32 bytes = stream.Read(data, 0, data.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                        reminder += responseData;
+                    }
+                    answer = reminder.Split('\n')[0];
+                    reminder = reminder.Remove(0, answer.Length + 1);
+                    problems--;
                 }
-                answer = reminder.Split('\n')[0];
-                reminder = reminder.Remove(0, answer.Length + 1);
+                problems = 0;
                 //stream.Close();
                 return answer;
             }
             catch (System.Net.Sockets.SocketException e)
             {
+                problems++;
                 throw TimeOutException.Instance;
             }
             catch (System.IO.IOException e)
             {
-                Console.WriteLine("Exception: {0}", e);
+                //Console.WriteLine("Exception: {0}", e);
                 if (!this.socket.Connected)
                 {
                     throw ServerDisconnectedException.Instance;
                 }
+                problems++;
                 throw TimeOutException.Instance;
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: {0}", e);
+                //Console.WriteLine("Exception: {0}", e);
                 throw TimeOutException.Instance;
             }
         }

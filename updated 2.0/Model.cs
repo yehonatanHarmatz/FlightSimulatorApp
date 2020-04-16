@@ -393,18 +393,26 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
-                    s = c.Read();
-                    Heading = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
+                        s = c.Read();
+                        Heading = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     mtx.WaitOne();
                     if (stop)
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/gps/indicated-vertical-speed\n");
-                    s = c.Read();
-                    VerticalSpeed = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/gps/indicated-vertical-speed\n");
+                        s = c.Read();
+                        VerticalSpeed = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     /**3**/
                     mtx.WaitOne();
@@ -412,9 +420,13 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/gps/indicated-ground-speed-kt\n");
-                    s = c.Read();
-                    GroundSpeed = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/gps/indicated-ground-speed-kt\n");
+                        s = c.Read();
+                        GroundSpeed = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     /**4**/
                     mtx.WaitOne();
@@ -422,9 +434,13 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
-                    s = c.Read();
-                    Speed = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
+                        s = c.Read();
+                        Speed = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     /**5**/
                     mtx.WaitOne();
@@ -432,9 +448,13 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/gps/indicated-altitude-ft\n");
-                    s = c.Read();
-                    GpsAltitude = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/gps/indicated-altitude-ft\n");
+                        s = c.Read();
+                        GpsAltitude = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     /**6**/
                     mtx.WaitOne();
@@ -442,9 +462,13 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
-                    s = c.Read();
-                    Roll = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
+                        s = c.Read();
+                        Roll = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     /**7**/
                     mtx.WaitOne();
@@ -452,9 +476,13 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
-                    s = c.Read();
-                    Pitch = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
+                        s = c.Read();
+                        Pitch = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     /**8**/
                     mtx.WaitOne();
@@ -462,9 +490,13 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /instrumentation/altimeter/indicated-altitude-ft\n");
-                    s = c.Read();
-                    AltimeterAltitude = s;
+                    try
+                    {
+                        c.Write("get /instrumentation/altimeter/indicated-altitude-ft\n");
+                        s = c.Read();
+                        AltimeterAltitude = s;
+                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     Thread.Sleep(250);
                 }
@@ -500,36 +532,44 @@ namespace FlightSimulatorApp
                     {
                         break;
                     }
-                    c.Write("get /position/latitude-deg\n");
-                    s = c.Read();
-                    if (!Double.TryParse(s, out d))
+                    try
                     {
-                        ErrorMessage = "recived invalid value";
+                        c.Write("get /position/latitude-deg\n");
+                        s = c.Read();
+                        if (!Double.TryParse(s, out d))
+                        {
+                            ErrorMessage = "recived invalid value";
+                        }
+                        else
+                        {
+                            //Latitude = Double.Parse(s.Split('=')[1]);
+                            Latitude = Double.Parse(s);
+                        }
                     }
-                    else
-                    {
-                        //Latitude = Double.Parse(s.Split('=')[1]);
-                        Latitude = Double.Parse(s);
-                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
                     mtx.WaitOne();
                     if (stop)
                     {
                         break;
                     }
-                    c.Write("get /position/longitude-deg\n");
-                    s = c.Read();
-                    if (!Double.TryParse(s, out d))
+                    try
                     {
-                        ErrorMessage = "recived invalid value";
+                        c.Write("get /position/longitude-deg\n");
+                        s = c.Read();
+                        if (!Double.TryParse(s, out d))
+                        {
+                            ErrorMessage = "recived invalid value";
+                        }
+                        else
+                        {
+                            //Longitude = Double.Parse(s.Split('=')[1]);
+                            Longitude = Double.Parse(s);
+                        }
                     }
-                    else
-                    {
-                        //Longitude = Double.Parse(s.Split('=')[1]);
-                        Longitude = Double.Parse(s);
-                    }
+                    catch (TimeOutException e) { ErrorMessage = e.Message; }
                     mtx.ReleaseMutex();
-                    //Thread.Sleep(250);
+                    Thread.Sleep(250);
                 }
                 finally
                 {
