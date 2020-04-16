@@ -107,7 +107,7 @@ namespace FlightSimulatorApp
             set
             {
 
-                if (Math.Abs(value) <= 84.99 && latitude != value)
+                if (Math.Abs(value) <= 90 && latitude != value)
                 {
                     latitude = value;
                 }
