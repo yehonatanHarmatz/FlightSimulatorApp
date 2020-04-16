@@ -39,21 +39,28 @@ namespace FlightSimulatorApp.views
             {
                 if (e.PropertyName.Equals("Zoom"))
                 {
-                    Dispatcher.Invoke(() => {
-                        myMap.ZoomLevel = map.Zoom;
-                        double x = Double.Parse(map.Location.Split(',')[0]);
-                        double y = Double.Parse(map.Location.Split(',')[1]);
-                        myMap.Center = new Location(x, y); 
-                    });
+                    try
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            myMap.ZoomLevel = map.Zoom;
+                            double x = Double.Parse(map.Location.Split(',')[0]);
+                            double y = Double.Parse(map.Location.Split(',')[1]);
+                            myMap.Center = new Location(x, y);
+                        });
+                    } catch(Exception ex) { }
                 }
                 else if (e.PropertyName.Equals("Location"))
                 {
-                    Dispatcher.Invoke(() =>
+                    try
                     {
-                        double x = Double.Parse(map.Location.Split(',')[0]);
-                        double y = Double.Parse(map.Location.Split(',')[1]);
-                        myMap.Center = new Location(x, y);
-                    });
+                        Dispatcher.Invoke(() =>
+                        {
+                            double x = Double.Parse(map.Location.Split(',')[0]);
+                            double y = Double.Parse(map.Location.Split(',')[1]);
+                            myMap.Center = new Location(x, y);
+                        });
+                    } catch (Exception ex) { }
                 }
             };
             DataContext = map;
