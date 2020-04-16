@@ -35,7 +35,7 @@ namespace FlightSimulatorApp.views
         public void SetVM(MapVM map)
         {
             this.map = map;
-            /*this.map.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
+            this.map.PropertyChanged += delegate (object sender, PropertyChangedEventArgs e)
             {
                 if (e.PropertyName.Equals("Zoom"))
                 {
@@ -46,7 +46,16 @@ namespace FlightSimulatorApp.views
                         myMap.Center = new Location(x, y); 
                     });
                 }
-            };*/
+                else if (e.PropertyName.Equals("Location"))
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        double x = Double.Parse(map.Location.Split(',')[0]);
+                        double y = Double.Parse(map.Location.Split(',')[1]);
+                        myMap.Center = new Location(x, y);
+                    });
+                }
+            };
             DataContext = map;
         }
     }

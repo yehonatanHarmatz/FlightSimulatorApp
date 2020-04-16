@@ -50,8 +50,8 @@ namespace FlightSimulatorApp
 
             my_window.panel.DataContext = vmPanel;
             my_window.navigator.DataContext = vmNavigator;
-            my_window.map.DataContext = mapVm;
-            //my_window.map.SetVM((MapVM)mapVm);
+            //my_window.map.DataContext = mapVm;
+            my_window.map.SetVM((MapVM)mapVm);
             my_window.errors.DataContext = errorsVm;
 
             Grid grid = ((Grid)my_window.FindName("Grid"));

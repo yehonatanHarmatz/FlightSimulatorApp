@@ -71,7 +71,7 @@ namespace FlightSimulatorApp
             }
         }
 
-        /*public double Zoom
+        public double Zoom
         {
             get
             {
@@ -79,13 +79,13 @@ namespace FlightSimulatorApp
             }
             set
             {
-                if (value != zoom && Math.Abs(zoom - value) > 1)
+                if (value != zoom && Math.Abs(zoom - value) > 0.5)
                 {
                     zoom = value;
                     OnPropertyChanged("Zoom");
                 }
             }
-        }*/
+        }
 
         public MapVM(Model m)
         {
@@ -98,12 +98,12 @@ namespace FlightSimulatorApp
         private static double CalculateZoom(double v)
         {
             double zoom = 16 - 1.1 * Math.Log(v);
-            return Math.Max(1, Math.Min(zoom, 10));
+            return Math.Max(1, Math.Min(zoom, 16));
         }
         /****
          * calculate distance via cordination
          ****/
-         /*
+         
         private static double DistanceOnGeoid(double lat1, double lon1, double lat2, double lon2)
         {
 
@@ -137,16 +137,16 @@ namespace FlightSimulatorApp
 
             // Distance in Metres
             return r * theta;
-        }*/
+        }
         /****
          * calculate heading via cordination
          ****/
         private static double HeadingCalculator(double lat1, double lon1, double lat2, double lon2)
         {
-            double phi1 = (Math.PI / 180) * lon1;
-            double phi2 = (Math.PI / 180) * lon2;
-            double lambda1 = (Math.PI / 180) * lat1;
-            double lambda2 = (Math.PI / 180) * lat2;
+            double phi1 = (Math.PI / 180) * lat1;
+            double phi2 = (Math.PI / 180) * lat2;
+            double lambda1 = (Math.PI / 180) * lon1;
+            double lambda2 = (Math.PI / 180) * lon2;
             double x = Math.Cos(phi1) * Math.Sin(phi2) - Math.Cos(phi2) * Math.Sin(phi1) * Math.Cos(lambda2 - lambda1);
             double y = Math.Cos(phi2) * Math.Sin(lambda2 - lambda1);
             return (180 / Math.PI) * (Math.Atan2(y, x));
@@ -162,22 +162,22 @@ namespace FlightSimulatorApp
                 this.vmLongitude = m.Longitude;
                 if (!first)
                 {
-                    //Zoom = CalculateZoom(DistanceOnGeoid(vmLatitudePrev, vmLongitudePrev, vmLatitude, vmLongitude));
+                    Zoom = CalculateZoom(DistanceOnGeoid(vmLatitudePrev, vmLongitudePrev, vmLatitude, vmLongitude));
                 }
                 if (!first && !m.ErrorMessage.Equals(TimeOutException.Instance.Message))
                 {
-                    if (m.Heading != null && m.Heading.Equals("ERR"))
+                    //if (m.Heading != null && m.Heading.Equals("ERR"))
                     {
                         Rotate = HeadingCalculator(vmLatitudePrev, vmLongitudePrev, vmLatitude, vmLongitude);
                     }
-                    else if (m.Heading != null)
+                    /*else if (m.Heading != null)
                     {
                         double d;
                         if (Double.TryParse(m.Heading, out d))
                         {
                             Rotate = d;
                         }
-                    }
+                    }*/
                 }
                 else
                 {
